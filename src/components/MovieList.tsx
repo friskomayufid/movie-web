@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
 import { getPopularMovies, Movie } from "../services/movieService";
+import Button from "./shared/Button";
 
 const MovieList: React.FC = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -51,7 +52,7 @@ const MovieList: React.FC = () => {
             id={movie.id}
             title={movie.title}
             posterPath={movie.poster_path}
-            releaseYear={movie.release_date.split("-")[0]}
+            releaseYear={movie.release_date.split('-')[0]}
           />
         ))}
       </div>
@@ -62,16 +63,11 @@ const MovieList: React.FC = () => {
       )}
       {!loading && page < totalPages && (
         <div className="text-center mt-8">
-          <button
-            onClick={loadMore}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md"
-          >
-            Load More
-          </button>
+          <Button onClick={loadMore}>Load More</Button>
         </div>
       )}
     </div>
-  );
+  )
 };
 
 export default MovieList;

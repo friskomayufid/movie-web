@@ -1,7 +1,7 @@
 import { Route } from 'react-router-dom'
 import MovieList from './components/MovieList'
 import MovieDetail from './components/MovieDetail'
-import Layout from './components/common/Layout'
+import Layout from './components/shared/Layout'
 
 function App() {
   return (
