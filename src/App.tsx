@@ -1,24 +1,15 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MovieList from "./components/MovieList";
+import { Route } from 'react-router-dom'
+import MovieList from './components/MovieList'
+import MovieDetail from './components/MovieDetail'
+import Layout from './components/common/Layout'
 
 function App() {
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-100">
-        <header className="bg-white shadow-sm">
-          <div className="container mx-auto px-4 py-4">
-            <h1 className="text-3xl font-bold text-gray-800">Movie Database</h1>
-          </div>
-        </header>
-        <main>
-          <Routes>
-            <Route path="/" element={<MovieList />} />
-            {/* Add movie detail route later */}
-          </Routes>
-        </main>
-      </div>
-    </Router>
-  );
+    <Layout>
+      <Route path="/" element={<MovieList />} />
+      <Route path="/movie/:id" element={<MovieDetail />} />
+    </Layout>
+  )
 }
 
-export default App;
+export default App

@@ -1,44 +1,45 @@
-import React, { useEffect, useState } from "react"
-import MovieCard from "./MovieCard"
-// import { getPopularMovies, Movie } from "../services/movieService"
+import React, { useEffect, useState } from "react";
+import MovieCard from "./MovieCard";
+import { getPopularMovies, Movie } from "../services/movieService";
 
 const MovieList: React.FC = () => {
-  const [movies, setMovies] = useState<Movie[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(0)
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
-  // useEffect(() => {
-  //   const fetchMovies = async () => {
-  //     try {
-  //       setLoading(true)
-  //       const data = await getPopularMovies(page)
-  //       setMovies((prevMovies) => [...prevMovies, ...data.results])
-  //       setTotalPages(data.total_pages)
-  //     } catch (err) {
-  //       setError("Failed to fetch movies. Please try again later.")
-  //     } finally {
-  //       setLoading(false)
-  //     }
-  //   }
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        setLoading(true);
+        const data = await getPopularMovies(page);
+        setMovies((prevMovies) => [...prevMovies, ...data.results]);
+        setTotalPages(data.total_pages);
+      } catch (err) {
+        setError("Failed to fetch movies. Please try again later.");
+        console.error(err)
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //   fetchMovies()
-  // }, [page])
+    fetchMovies();
+  }, [page]);
 
-  // const loadMore = () => {
-  //   if (page < totalPages) {
-  //     setPage((prev) => prev + 1)
-  //   }
-  // }
+  const loadMore = () => {
+    if (page < totalPages) {
+      setPage((prev) => prev + 1);
+    }
+  };
 
-  // if (error) {
-  //   return (
-  //     <div className="text-center text-red-600 p-4">
-  //       <p>{error}</p>
-  //     </div>
-  //   )
-  // }
+  if (error) {
+    return (
+      <div className="text-center text-red-600 p-4">
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -62,7 +63,7 @@ const MovieList: React.FC = () => {
       {!loading && page < totalPages && (
         <div className="text-center mt-8">
           <button
-            // onClick={loadMore}
+            onClick={loadMore}
             className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md"
           >
             Load More
@@ -70,7 +71,7 @@ const MovieList: React.FC = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default MovieList
+export default MovieList;
