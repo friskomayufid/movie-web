@@ -1,6 +1,6 @@
 import { Route } from 'react-router-dom'
-import MovieList from './components/MovieList'
-import MovieDetail from './components/MovieDetail'
+import MovieList from './modules/movies/screens/MovieList'
+import MovieDetail from './modules/movies/screens/MovieDetail'
 import Layout from './components/shared/Layout'
 
 function App() {

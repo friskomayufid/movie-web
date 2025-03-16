@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { TMDB_CONFIG } from '../config/api'
+import { TMDB_CONFIG } from '../../../config/api'
 
 interface MovieCardProps {
   id: number

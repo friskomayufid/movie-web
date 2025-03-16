@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import MovieCard from './MovieCard'
-import Button from './shared/Button'
+import MovieCard from '../components/MovieCard'
+import Button from '../../../components/shared/Button'
 import { useFetchMovies } from '../hooks/useFetchMovies'
 import { useSearchMovies } from '../hooks/useSearchMoviesReturn'
 

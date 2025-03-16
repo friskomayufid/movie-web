@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
-import MovieDetail from '../MovieDetail'
-import { getMovieDetails } from '../../services/movieService'
+import MovieDetail from '../screens/MovieDetail'
+import { getMovieDetails } from '../services/movieService'
 
 jest.mock('../../services/movieService')
 const mockGetMovieDetails = getMovieDetails as jest.MockedFunction<

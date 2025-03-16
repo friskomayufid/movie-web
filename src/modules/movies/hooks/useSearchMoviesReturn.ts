@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { searchMovies, Movie } from '../services/movieService'
-import useDebounce from './useDebounce'
+import useDebounce from '../../../hooks/useDebounce'
 
 interface UseSearchMoviesReturn {
   searchResults: Movie[]

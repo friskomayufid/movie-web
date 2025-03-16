@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { MemoryRouter } from 'react-router-dom'
-import MovieCard from '../MovieCard'
+import MovieCard from '../components/MovieCard'
 
 jest.mock('../../config/api', () => ({
   TMDB_CONFIG: {
