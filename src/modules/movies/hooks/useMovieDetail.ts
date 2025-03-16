@@ -55,7 +55,7 @@ export const useMovieDetails = (id: string | undefined) => {
           loading: false,
           error: 'Failed to fetch movie details. Please try again later.',
         }))
-        console.error(err)
+        throw err
       }
     }
 

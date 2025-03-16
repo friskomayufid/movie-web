@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
-import { searchMovies, Movie } from '../services/movieService'
+import { searchMovies } from '../services/movieService'
 import useDebounce from '../../../hooks/useDebounce'
+import { Movie } from '../types'
 
 interface UseSearchMoviesReturn {
   searchResults: Movie[]
@@ -36,7 +37,7 @@ export const useSearchMovies = (query: string): UseSearchMoviesReturn => {
       setTotalPages(data.total_pages)
     } catch (err) {
       setSearchError('Failed to search movies. Please try again.')
-      console.error(err)
+      throw err
     } finally {
       setSearchLoading(false)
     }

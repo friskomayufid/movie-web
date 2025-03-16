@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
-import { getMovieList, Movie } from '../services/movieService'
+import { getMovieList } from '../services/movieService'
+import { Movie } from '../types'
 
 interface UseFetchMoviesReturn {
   movies: Movie[]
@@ -30,7 +31,7 @@ export const useFetchMovies = (
       setTotalPages(data.total_pages)
     } catch (err) {
       setError('Failed to fetch movies. Please try again later.')
-      console.error(err)
+      throw err
     } finally {
       setLoading(false)
     }

@@ -9,7 +9,7 @@ function Layout({ children }: { children: React.ReactNode }) {
           <div className="container mx-auto px-4 py-4">
             <NavLink to="/">
               <h1 className="text-3xl font-bold text-gray-800">
-                Movie Database
+                Movie App
               </h1>
             </NavLink>
           </div>
