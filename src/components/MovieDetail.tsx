@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getMovieDetails, Movie } from '../services/movieService'
+import { Credit, getMovieCredits, getMovieDetails, Movie } from '../services/movieService'
 import { TMDB_CONFIG } from '../config/api'
 
 const MovieDetail: React.FC = () => {
@@ -9,17 +9,38 @@ const MovieDetail: React.FC = () => {
   const [movie, setMovie] = useState<Movie | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [credits, setCredits] = useState<{
+    cast: Credit[]
+    director: Credit | null
+  }>({
+    cast: [],
+    director: null,
+  })
 
   const handleBack = () => {
     navigate(-1)
   }
 
   useEffect(() => {
-    const fetchMovieDetails = async () => {
+    const fetchMovieData = async () => {
       try {
         setLoading(true)
-        const data = await getMovieDetails(Number(id))
-        setMovie(data)
+        const [movieData, creditsData] = await Promise.all([
+          getMovieDetails(Number(id)),
+          getMovieCredits(Number(id)),
+        ])
+
+        setMovie(movieData)
+
+        const director = creditsData.crew.find(
+          (person) => person.job === 'Director'
+        )
+        const mainCast = creditsData.cast.slice(0, 5)
+
+        setCredits({
+          cast: mainCast,
+          director: director || null,
+        })
       } catch (err) {
         setError('Failed to fetch movie details. Please try again later.')
         console.error(err)
@@ -29,7 +50,7 @@ const MovieDetail: React.FC = () => {
     }
 
     if (id) {
-      fetchMovieDetails()
+      fetchMovieData()
     }
   }, [id])
 
@@ -122,6 +143,41 @@ const MovieDetail: React.FC = () => {
                     </span>
                   ))}
                 </div>
+              </div>
+              <div className="mb-6 mt-5">
+                {credits.director && (
+                  <div className="mb-4">
+                    <h3 className="text-gray-600 font-semibold">Director</h3>
+                    <p>{credits.director.name}</p>
+                  </div>
+                )}
+
+                {credits.cast.length > 0 && (
+                  <div>
+                    <h3 className="text-gray-600 font-semibold mb-2">
+                      Main Cast
+                    </h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      {credits.cast.map((actor) => (
+                        <div key={actor.id} className="flex items-center gap-3">
+                          {actor.profile_path && (
+                            <img
+                              src={`${TMDB_CONFIG.IMAGE_BASE_URL}w92${actor.profile_path}`}
+                              alt={actor.name}
+                              className="w-12 h-12 rounded-full object-cover"
+                            />
+                          )}
+                          <div>
+                            <p className="font-medium">{actor.name}</p>
+                            <p className="text-sm text-gray-600">
+                              {actor.character}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

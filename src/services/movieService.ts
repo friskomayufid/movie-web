@@ -18,6 +18,19 @@ export interface Movie {
   tagline: string
 }
 
+export interface Credit {
+  id: number
+  name: string
+  character?: string
+  job?: string
+  profile_path: string | null
+}
+
+interface MovieCredits {
+  cast: Credit[]
+  crew: Credit[]
+}
+
 interface MovieResponse {
   page: number
   results: Movie[]
@@ -51,6 +64,12 @@ export const searchMovies = async (
 
 export const getMovieDetails = async (movieId: number): Promise<Movie> => {
   const { data } = await api.get(`/movie/${movieId}`)
+
+  return data
+}
+
+export const getMovieCredits = async (movieId: number): Promise<MovieCredits> => {
+  const { data } = await api.get(`/movie/${movieId}/credits`)
 
   return data
 }
