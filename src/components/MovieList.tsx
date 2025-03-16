@@ -1,50 +1,73 @@
-import React, { useEffect, useState } from "react";
-import MovieCard from "./MovieCard";
-import { getPopularMovies, Movie } from "../services/movieService";
-import Button from "./shared/Button";
+import React, { useState } from 'react'
+import MovieCard from './MovieCard'
+import Button from './shared/Button'
+import { useFetchMovies } from '../hooks/useFetchMovies'
 
 const MovieList: React.FC = () => {
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('now_playing')
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        setLoading(true);
-        const data = await getPopularMovies(page);
-        setMovies((prevMovies) => [...prevMovies, ...data.results]);
-        setTotalPages(data.total_pages);
-      } catch (err) {
-        setError("Failed to fetch movies. Please try again later.");
-        console.error(err)
-      } finally {
-        setLoading(false);
-      }
-    };
+  const {
+    movies,
+    loading,
+    error,
+    loadMoreMovies,
+    resetMovies,
+    hasMore,
+  } = useFetchMovies(selectedCategory)
 
-    fetchMovies();
-  }, [page]);
+  const categories = [
+    { id: 'now_playing', name: 'Now Playing' },
+    { id: 'popular', name: 'Popular' },
+    { id: 'top_rated', name: 'Top Rated' },
+    { id: 'upcoming', name: 'Upcoming' },
+  ]
 
-  const loadMore = () => {
-    if (page < totalPages) {
-      setPage((prev) => prev + 1);
-    }
-  };
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value)
+  }
+
+  const handleCategoryChange = (category: string) => {
+    resetMovies()
+    setSelectedCategory(category)
+  }
 
   if (error) {
     return (
       <div className="text-center text-red-600 p-4">
         <p>{error}</p>
       </div>
-    );
+    )
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-6">Popular Movies</h2>
+      <div className="mb-8">
+        <input
+          type="text"
+          placeholder="Search movies..."
+          value={searchQuery}
+          onChange={handleSearch}
+          className="w-full p-2 border border-gray-300 rounded-md"
+        />
+      </div>
+
+      <div className="flex gap-4 mb-8">
+        {categories.map((category) => (
+          <Button
+            key={category.id}
+            onClick={() => handleCategoryChange(category.id)}
+            className={`px-4 py-2 rounded-md ${
+              selectedCategory === category.id
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-200 text-gray-700'
+            }`}
+          >
+            {category.name}
+          </Button>
+        ))}
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {movies.map((movie) => (
           <MovieCard
@@ -61,13 +84,13 @@ const MovieList: React.FC = () => {
           <p>Loading...</p>
         </div>
       )}
-      {!loading && page < totalPages && (
+      {!loading && hasMore && (
         <div className="text-center mt-8">
-          <Button onClick={loadMore}>Load More</Button>
+          <Button onClick={loadMoreMovies}>Load More</Button>
         </div>
       )}
     </div>
   )
-};
+}
 
-export default MovieList;
+export default MovieList

@@ -25,10 +25,10 @@ interface MovieResponse {
   total_results: number
 }
 
-export const getPopularMovies = async (
-  page: number = 1
+export const getMovieList = async (
+  page: number = 1, category: string = 'popular'
 ): Promise<MovieResponse> => {
-  const { data } = await api.get('/movie/popular', {
+  const { data } = await api.get(`/movie/${category}`, {
     params: { page },
   })
 
